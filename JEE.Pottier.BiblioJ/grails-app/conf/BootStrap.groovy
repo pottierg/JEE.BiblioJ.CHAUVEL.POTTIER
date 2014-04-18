@@ -15,7 +15,7 @@ class BootStrap {
 		
 		Auteur a1 = new Auteur(nom : "Orwell", prenom : "George")
 		Auteur a2 = new Auteur(nom : "Collins", prenom : "Suzanne")
-		Auteur a3 = new Auteur(nom: "Murakami", prenom : "Haruki")
+		Auteur a3 = new Auteur(nom : "Murakami", prenom : "Haruki")
 		Auteur a4 = new Auteur(nom : "Larsson", prenom : "Stieg")
 		Auteur a5 = new Auteur(nom : "Pancol", prenom : "Katherine")
 		Auteur a6 = new Auteur(nom : "Harzog", prenom : "Felicite")
