@@ -8,6 +8,7 @@ class Auteur {
     }
 	
 	static hasMany = [livresEdites : Livre]
+	static belongsTo = Livre
 	
 	String nom
 	String prenom

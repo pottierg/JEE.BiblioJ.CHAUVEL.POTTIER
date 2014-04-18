@@ -9,7 +9,7 @@ class Livre {
     }
 	
 	Type type
-	static belongsTo = Auteur
+	//static belongsTo = Auteur
     static hasMany = [auteurs : Auteur]
 	
 	String titre

@@ -104,17 +104,18 @@ class LivreController {
 		[livreInstance : new Livre()]
 	}
 	
-	def resultatsRecherche(String titre, String nom, Type type) {
+	def resultatsRecherche(int max, String titre, String nom, Type type) {
+		params.max = Math.min(max ?: 5, 100)
 		//def liste = Livre.findAllByTitreLike('%' + titre + '%')
 		
 		//def auteursPossibles = Auteur.findAllByNomLike('%' + auteur + '%')
 		
 		def c = Livre.createCriteria()
-		def liste = c.listDistinct {
-			like("titre", '%' + titre + '%')
+		def liste = c.list {
+			like('titre', "%" + titre + "%")
 			
 			auteurs {
-				like("nom", '%' + nom + '%')
+				like('nom', "%" + nom + "%")
 			}
 			
 			//'in'("type", Type.findAllByIntituleLike('%' + type + '%'))
@@ -132,6 +133,6 @@ class LivreController {
 		System.out.println(nom)
 		System.out.println(titre)
 		
-		[livreInstanceList : liste, livreInstanceTotal: total]
+		[livreInstanceList : liste.take(params.max), livreInstanceTotal: total]
 	}
 }
