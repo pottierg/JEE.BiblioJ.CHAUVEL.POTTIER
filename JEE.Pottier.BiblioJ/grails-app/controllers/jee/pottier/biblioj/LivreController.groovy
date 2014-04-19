@@ -104,23 +104,42 @@ class LivreController {
 		[livreInstance : new Livre()]
 	}
 	
-	def resultatsRecherche(int max, String titre, String nom, Type type) {
-		params.max = Math.min(max ?: 5, 100)
-		//def liste = Livre.findAllByTitreLike('%' + titre + '%')
+	def resultatsRecherche(int max, int offset, String titre, String nom, boolean checkType, int type) {
+		params.max = 5
+		params.offset = Math.min(offset ?: 0, 100)
 		
-		//def auteursPossibles = Auteur.findAllByNomLike('%' + auteur + '%')
+		if(titre == null){
+			titre = session['titre']
+			nom = session['nom']
+			checkType = session['checkType']
+			type = session['type']
+		}
+		else{
+			session['titre'] = titre
+			session['nom'] = nom
+			session['checkType'] = checkType
+			session['type'] = type
+		}
 		
 		def c = Livre.createCriteria()
-		def liste = c.list {
-			like('titre', "%" + titre + "%")
-			
-			auteurs {
-				like('nom', "%" + nom + "%")
+		def liste = null
+		if(checkType == true){
+			liste = c.list {
+				like('titre', "%" + titre + "%")
+				auteurs {
+					like('nom', "%" + nom + "%")
+				}
+				'eq'("type", Type.get(type))
+				order("titre", "asc")
 			}
-			
-			//'in'("type", Type.findAllByIntituleLike('%' + type + '%'))
-			
-			//order("titre", "asc")
+		} else {
+			liste = c.list {
+				like('titre', "%" + titre + "%")
+				auteurs {
+					like('nom', "%" + nom + "%")
+				}
+				order("titre", "asc")
+			}
 		}
 		
 		def total = 0
@@ -129,10 +148,6 @@ class LivreController {
 			total = liste.size()
 		}
 		
-		System.out.println(total)
-		System.out.println(nom)
-		System.out.println(titre)
-		
-		[livreInstanceList : liste.take(params.max), livreInstanceTotal: total]
+		[livreInstanceList : liste, livreInstanceTotal: total, pagination : params]
 	}
 }
