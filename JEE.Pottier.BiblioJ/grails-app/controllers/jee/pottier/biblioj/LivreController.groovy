@@ -12,6 +12,11 @@ class LivreController {
 
     def list(Integer max) {
         params.max = Math.min(max ?: 10, 100)
+		
+		if(session['panier'] == null){
+			session['panier'] = []
+		}
+		
         [livreInstanceList: Livre.list(params), livreInstanceTotal: Livre.count()]
     }
 
@@ -101,12 +106,20 @@ class LivreController {
     }
 	
 	def rechercheLivres() {
+		if(session['panier'] == null){
+			session['panier'] = []
+		}
+		
 		[livreInstance : new Livre()]
 	}
 	
-	def resultatsRecherche(int max, int offset, String titre, String nom, boolean checkType, int type) {
+	def resultatsRecherche(int max, int offset, String titre, String nom, boolean checkType, int type, int idLivre) {
 		params.max = 5
 		params.offset = Math.min(offset ?: 0, 100)
+		
+		if(idLivre != null && idLivre != 0){
+			ajoutPanier(idLivre)
+		}
 		
 		if(titre == null){
 			titre = session['titre']
@@ -123,7 +136,7 @@ class LivreController {
 		
 		def c = Livre.createCriteria()
 		def liste = null
-		if(checkType == true){
+		if (checkType == true){
 			liste = c.list {
 				like('titre', "%" + titre + "%")
 				auteurs {
@@ -144,10 +157,36 @@ class LivreController {
 		
 		def total = 0
 		
-		if(liste != null) {
+		if (liste != null) {
 			total = liste.size()
 		}
 		
 		[livreInstanceList : liste, livreInstanceTotal: total, pagination : params]
+	}
+	
+	def ajoutPanier(Integer idLivre){
+		if (session['panier'] == null){
+			session['panier'] = []
+		}
+		
+		if (Livre.findById(idLivre).nbExDispos > 0 && !session.panier.id.contains(Livre.findById(idLivre).id)){
+			session['panier'].add(Livre.findById(idLivre))
+		}
+	}
+	
+	def deleteFromPanier(Integer idLivre){
+		System.out.println("id a supprimer : " + Livre.findById(idLivre).titre)
+		
+		for(int i = 0; session['panier'] != null && i < session['panier'].size(); i++){
+			if(session['panier'][i] != null && session["panier"][i].getId() == idLivre){
+				session['panier'].remove(i)
+				//def targetUri = params.targetUri ?: "/"
+				//redirect(uri: targetUri)
+				break
+			}
+		}
+		
+		def targetUri = params.targetUri ?: "/"
+		redirect(uri: targetUri)
 	}
 }

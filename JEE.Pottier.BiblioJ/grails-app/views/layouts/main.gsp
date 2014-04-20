@@ -18,8 +18,39 @@
 		<r:layoutResources />
 	</head>
 	<body>
+		
 		<div id="grailsLogo" role="banner"><a href="http://grails.org"><img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails"/></a></div>
 		<g:layoutBody/>
+		<g:if test="${session.panier != null}">
+			<g:if test="${session.panier.size() > 0}">
+				<form action="" method="get">
+					<table>
+						<thead>
+							<tr>
+							
+								<th>Panier - Titre</th>
+								
+								<th></th>
+							
+							</tr>
+						</thead>
+						<tbody>
+							<g:each in="${session.panier}" status="i" var="livreReserve">
+								<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+							
+								<td>${livreReserve}</td>
+								
+								<td>
+									${link(action:'deleteFromPanier', controller:'livre', params : ['targetUri': (request.forwardURI - request.contextPath), 'idLivre' : session.panier[i].getId()]) { 'Supprimer' }}
+								</td>
+								
+							</tr>
+							</g:each>
+						</tbody>
+					</table>
+				</form>
+			</g:if>
+		</g:if>
 		<div class="footer" role="contentinfo"></div>
 		<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
 		<g:javascript library="application"/>
