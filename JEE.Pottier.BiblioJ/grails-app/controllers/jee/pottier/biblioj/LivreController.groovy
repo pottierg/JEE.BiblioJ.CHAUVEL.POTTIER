@@ -10,11 +10,15 @@ class LivreController {
         redirect(action: "list", params: params)
     }
 
-    def list(Integer max) {
+    def list(Integer max, Integer idLivre) {
         params.max = Math.min(max ?: 10, 100)
 		
 		if(session['panier'] == null){
 			session['panier'] = []
+		}
+		
+		if(idLivre != null && idLivre != 0){
+			ajoutPanier(idLivre)
 		}
 		
         [livreInstanceList: Livre.list(params), livreInstanceTotal: Livre.count()]
@@ -175,13 +179,9 @@ class LivreController {
 	}
 	
 	def deleteFromPanier(Integer idLivre){
-		System.out.println("id a supprimer : " + Livre.findById(idLivre).titre)
-		
 		for(int i = 0; session['panier'] != null && i < session['panier'].size(); i++){
 			if(session['panier'][i] != null && session["panier"][i].getId() == idLivre){
 				session['panier'].remove(i)
-				//def targetUri = params.targetUri ?: "/"
-				//redirect(uri: targetUri)
 				break
 			}
 		}

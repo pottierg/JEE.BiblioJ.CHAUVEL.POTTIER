@@ -21,36 +21,48 @@
 			<g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
-			<table>
-				<thead>
-					<tr>
-					
-						<g:sortableColumn property="titre" title="${message(code: 'livre.titre.label', default: 'Titre')}" />
-					
-						<g:sortableColumn property="nbEx" title="${message(code: 'livre.nbEx.label', default: 'Nb Ex')}" />
-					
-						<g:sortableColumn property="nbExDispos" title="${message(code: 'livre.nbExDispos.label', default: 'Nb Ex Dispos')}" />
-					
-						<th><g:message code="livre.type.label" default="Type" /></th>
-					
-					</tr>
-				</thead>
-				<tbody>
-				<g:each in="${livreInstanceList}" status="i" var="livreInstance">
-					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-					
-						<td><g:link action="show" id="${livreInstance.id}">${fieldValue(bean: livreInstance, field: "titre")}</g:link></td>
-					
-						<td>${fieldValue(bean: livreInstance, field: "nbEx")}</td>
-					
-						<td>${fieldValue(bean: livreInstance, field: "nbExDispos")}</td>
-					
-						<td>${fieldValue(bean: livreInstance, field: "type")}</td>
-					
-					</tr>
-				</g:each>
-				</tbody>
-			</table>
+			
+			<form name="ajout" action="list" method="get">
+				
+				<table>
+					<thead>
+						<tr>
+						
+							<g:sortableColumn property="titre" title="${message(code: 'livre.titre.label', default: 'Titre')}" />
+						
+							<g:sortableColumn property="nbEx" title="${message(code: 'livre.nbEx.label', default: 'Nb Ex')}" />
+						
+							<g:sortableColumn property="nbExDispos" title="${message(code: 'livre.nbExDispos.label', default: 'Nb Ex Dispos')}" />
+						
+							<th><g:message code="livre.type.label" default="Type" /></th>
+							
+							<th></th>
+						
+						</tr>
+					</thead>
+					<tbody>
+					<g:each in="${livreInstanceList}" status="i" var="livreInstance">
+						<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+						
+							<td><g:link action="show" id="${livreInstance.id}">${fieldValue(bean: livreInstance, field: "titre")}</g:link></td>
+						
+							<td>${fieldValue(bean: livreInstance, field: "nbEx")}</td>
+						
+							<td>${fieldValue(bean: livreInstance, field: "nbExDispos")}</td>
+						
+							<td>${fieldValue(bean: livreInstance, field: "type")}</td>
+							
+							<td>
+								<g:if test="${livreInstance.nbExDispos > 0 && !session.panier.contains(livreInstance.id)}">
+									<button name="idLivre" type="submit" value="${livreInstance.id}">Ajouter</button>
+								</g:if>
+							</td>
+						
+						</tr>
+					</g:each>
+					</tbody>
+				</table>
+			</form>
 			<div class="pagination">
 				<g:paginate total="${livreInstanceTotal}" />
 			</div>
