@@ -12,6 +12,7 @@
 			<ul>
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
 				<li><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
+				<li><g:link action="rechercheLivres"><g:message code="Recherche" /></g:link></li>
 			</ul>
 		</div>
 		<div id="create-livre" class="content scaffold-create" role="main">

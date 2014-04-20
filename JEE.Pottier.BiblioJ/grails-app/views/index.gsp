@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta name="layout" content="main"/>
-		<title>Welcome to Grails</title>
+		<title>BiblioJ</title>
 		<style type="text/css" media="screen">
 			#status {
 				background-color: #eee;
@@ -85,11 +85,10 @@
 			<h1>BiblioJ</h1>
 
 			<div id="controller-list" role="navigation">
-				<h2>Available Controllers:</h2>
 				<ul>
-					<g:each var="c" in="${grailsApplication.controllerClasses.sort { it.fullName } }">
-						<li class="controller"><g:link controller="${c.logicalPropertyName}">${c.fullName}</g:link></li>
-					</g:each>
+					<li><g:link action="rechercheLivres" controller="livre"><g:message code="Rechercher des livres" /></g:link></li>
+					<li><g:link action="list" controller="livre"><g:message code="Liste complète des livres" /></g:link></li>
+					<li><g:link action="list" controller="reservation"><g:message code="R&eacuteservations en cours" /></g:link></li>
 				</ul>
 			</div>
 		</div>

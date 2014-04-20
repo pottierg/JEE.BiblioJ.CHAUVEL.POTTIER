@@ -19,7 +19,11 @@
 	</head>
 	<body>
 		
-		<div id="grailsLogo" role="banner"><a href="http://grails.org"><img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails"/></a></div>
+		<div id="grailsLogo" role="banner">
+			<a class="home" href="${createLink(uri: '/')}">
+				<img src="${resource(dir: 'images', file: 'logo.gif')}" alt="BiblioJ" width="80"/>
+			</a>
+		</div>
 		<g:layoutBody/>
 		<g:if test="${session.panier != null}">
 			<g:if test="${session.panier.size() > 0}">
@@ -28,7 +32,7 @@
 						<thead>
 							<tr>
 							
-								<th>Panier - Titre</th>
+								<th>Panier</th>
 								
 								<th></th>
 							
@@ -48,6 +52,7 @@
 							</g:each>
 						</tbody>
 					</table>
+					${link(action:'enregistrerReservation', controller:'reservation') { 'R&eacuteserver mon panier' }}
 				</form>
 			</g:if>
 		</g:if>
