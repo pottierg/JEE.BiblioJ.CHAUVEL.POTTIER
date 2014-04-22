@@ -142,10 +142,12 @@ class ReservationController {
 	}
 	
 	def confirmerReservation(){
-		
+		if(session['reservation'] != null){
+			session['reservation'].save()
+		}
 	}
 	
 	def annulerReservation(){
-		
+		session['reservation'] = null;
 	}
 }
